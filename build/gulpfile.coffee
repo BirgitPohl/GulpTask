@@ -1,6 +1,6 @@
 gulp    = require 'gulp'
 
-watch   = require 'gulp-watch'
+watcher   = require 'watch'
 coffee  = require 'gulp-coffee'
 concat  = require 'gulp-concat'
 gutil   = require 'gulp-util'
@@ -25,10 +25,7 @@ gulp.task 'give', ->
 
 #coffee -> js with parameter: path to the folders
 gulp.task 'coffee', ['default', 'give'], ->
- #todo parameter uebergabe with call function
-#  gulp.src 'give'
-#    .pipe '--input hey'
-#    .pipe '--output heiho'
+ #todo doobidoo parameter uebergabe with call function
   gulp.start 'give'
   params = process.argv
   source = params.indexOf('--source')
@@ -41,12 +38,17 @@ gulp.task 'coffee', ['default', 'give'], ->
   if source > -1 and target > -1 and typeof sourceString is 'string' and typeof targetString is 'string' and sourceString.indexOf('--') == -1 and targetString.indexOf('--') == -1
     fs.stat sourcePath, (err, stat) ->
       if err == null
-        gulp.src "#{sourcePath}*.coffee"
-         .pipe coffee bare: true
-         .pipe concat "test.js"
-         .pipe gulp.dest "#{targetPath}"
-         .on 'error', gutil.log
-        gutil.log success "Successfully created a file here: " + details "./build/#{targetString}/"
+        # control + C to stop it, cmd + s to save, alt + cmd + y to synchronize view
+        gulp.watch "#{sourcePath}*.coffee", ->
+          #todo doobidoo: Add Gulp Watch
+          gulp.src "#{sourcePath}*.coffee"
+            .pipe gulp.watch "#{sourcePath}*.coffee"
+            .pipe coffee bare: true
+            .pipe concat "test.js"
+            .pipe gulp.dest "#{targetPath}"
+
+            .on 'error', gutil.log
+          gutil.log success "Successfully updated a file here: " + details "./build/#{targetString}/"
       else
         if err.code is 'ENOENT' then gutil.log error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat}"
         else gutil.log error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
