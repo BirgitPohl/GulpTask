@@ -1,20 +1,19 @@
-gulp    = require('gulp-param')(require('gulp'), process.argv)
+gulp          = require('gulp-param')(require('gulp'), process.argv)
+browserSync   = require('browser-sync')#.create #call this before gulp
+watch         = require 'gulp-watch'
 
-#watchers and updaters
-browserSync = require('browser-sync').create;
-
-#jshint  = require 'gulp-jshint' #shows mistakes in your JS file
-coffee  = require 'gulp-coffee'
-concat  = require 'gulp-concat'
-gutil   = require 'gulp-util'
+#jshint       = require 'gulp-jshint' #shows mistakes in your JS file
+coffee        = require 'gulp-coffee'
+concat        = require 'gulp-concat'
+gutil         = require 'gulp-util'
 #gutil.log requires self defined logs: https://github.com/gulpjs/gulp-util
 #color them with chalk
-fs      = require 'fs'
-chalk   = require 'chalk'
+fs            = require 'fs'
+chalk         = require 'chalk'
 #Some chalk color definitions:
-errorColor   = chalk.red
-successColor = chalk.green
-detailsColor = chalk.yellow
+errorColor    = chalk.red
+successColor  = chalk.green
+detailsColor  = chalk.yellow
 
 
 ##########################################
@@ -23,22 +22,27 @@ detailsColor = chalk.yellow
 ############ with gulp-params ############
 ##########################################
 
-gulp.task 'default', ['watch'], ->
+gulp.task 'default', ['browser-sync', 'watch'], ->
 
 gulp.task 'coffee', (source, target) ->
   sourcePath = "./build/#{source}/"
   targetPath = "./build/#{target}/"
 
   gulp.src "#{sourcePath}*.coffee"
+    #.pipe watch "#{sourcePath}*.coffee"
     .pipe coffee bare: true
     .pipe concat "test.js"
     .pipe gulp.dest "#{targetPath}"
-    .on 'error', gutil.log
+    #.pipe browserSync.stream
+    .on 'error', gutil.log, 'change', browserSync.stream, 'end', gutil.log successColor ['watch']
+    #.on 'change', browserSync.stream, 'error', gutil.log
+    #.pipe("#{sourcePath}*.coffee").watch
   gutil.log successColor "Successfully updated a file here: " + detailsColor "#{targetPath}"
 
-gulp.task 'browser-synch', ->
-  browserSync.init ->
-    server: "./build"
+gulp.task 'browser-sync', ->
+  #todo maybe change UI
+  browserSync.init(
+     server: "./build/test-Coffee")
 
 gulp.task 'watch', (source, target) ->
   # control + C to stop it, cmd + s to save, alt + cmd + y to synchronize view
@@ -48,7 +52,7 @@ gulp.task 'watch', (source, target) ->
     fs.stat sourcePath, (err, stat) ->
       if err is null
         #todo https://www.browsersync.io/docs/gulp/
-        browserSync.init server: "./build"
+        #todo watcher watches only one time
         gulp.watch "./build/#{source}/*.coffee", ['coffee']
           .on 'change', browserSync.reload
       else

@@ -18,6 +18,6 @@ addTo(function() {
   return number + number;
 });
 
-zer(function() {
+zero(function() {
   return number - number;
 });

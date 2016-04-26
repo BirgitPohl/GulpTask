@@ -11,5 +11,5 @@ multiply ->
 addTo ->
   number + number
 
-zero ->
+zeroooo ->
   number-number

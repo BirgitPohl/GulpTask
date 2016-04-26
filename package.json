@@ -16,9 +16,10 @@
     "watch": "^0.17.1"
   },
   "devDependencies": {
-    "browser-sync": "^2.12.4",
+    "browser-sync": "^2.12.5",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.0",
+    "gulp-watch": "^4.3.5",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.1.0"
   }
