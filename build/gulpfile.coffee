@@ -33,8 +33,8 @@ gulp.task 'coffee', (source, target) ->
     .pipe coffee bare: true
     .pipe concat "test.js"
     .pipe gulp.dest "#{targetPath}"
-    #.pipe browserSync.stream
-    .on 'error', gutil.log, 'change', browserSync.stream, 'end', gutil.log successColor ['watch']
+    .pipe browserSync.reload({stream: true})
+    .on 'error', gutil.log#, 'change', browserSync.stream, 'end', gutil.log successColor ['watch']
     #.on 'change', browserSync.stream, 'error', gutil.log
     #.pipe("#{sourcePath}*.coffee").watch
   gutil.log successColor "Successfully updated a file here: " + detailsColor "#{targetPath}"
@@ -42,9 +42,11 @@ gulp.task 'coffee', (source, target) ->
 gulp.task 'browser-sync', ->
   #todo maybe change UI
   browserSync.init(
-     server: "./build/test-Coffee")
+     server: baseDir: "./build/test-Coffee")
+  gutil.log "Server initiated and it is serving some files."
 
 gulp.task 'watch', (source, target) ->
+  gutil.log "I'm preparing watch now:"
   # control + C to stop it, cmd + s to save, alt + cmd + y to synchronize view
   sourcePath = "./build/#{source}/"
   targetPath = "./build/#{target}/"
@@ -52,11 +54,14 @@ gulp.task 'watch', (source, target) ->
     fs.stat sourcePath, (err, stat) ->
       if err is null
         #todo https://www.browsersync.io/docs/gulp/
-        #todo watcher watches only one time
-        gulp.watch "./build/#{source}/*.coffee", ['coffee']
-          .on 'change', browserSync.reload
+        #todo watcher watches only one time - BS seems to watch it carefully
+        watch "./build/#{source}/*.coffee"#, ['coffee'] #todo the function call is ignored
+          .on 'change', browserSync.reload, -> #todo browsersync.reload prevents triggering everything after it
+            gulp.start 'coffee'
+
+          #.on 'change', coffee()
       else
-        #you can make an error switch here
+        #you can make an error switch here to distinguish the error types
         if err.code is 'ENOENT' then gutil.log errorColor "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sourcePath} \n Target: #{targetPath}"
         else gutil.log errorColor "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
   else
