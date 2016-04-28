@@ -8,8 +8,8 @@ devide ->
 multiply ->
   number * devisor
 
-addToasd ->
+add ->
   number + number
-
-blosdsdffdasdsaasddhdsob ->
+d
+zerddxasxsodsddoo ->
   number-number

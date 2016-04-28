@@ -14,10 +14,12 @@ multiply(function() {
   return number * devisor;
 });
 
-addToasd(function() {
+add(function() {
   return number + number;
 });
 
-blosdsdffdhdsob(function() {
+d;
+
+zerddxasxsodsddoo(function() {
   return number - number;
 });
