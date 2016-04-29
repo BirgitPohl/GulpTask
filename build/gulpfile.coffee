@@ -14,11 +14,11 @@ clean         = require 'gulp-clean'
 ##########################################
 
 sources =
-  coffee:       "" #"./build/test-Coffee/*.coffee" #todo doobido: Create a if else if args are empty
-  coffeePath:   "" #"./build/test-Coffee/*.coffee" #todo doobido: Create a if else if args are empty
+  coffee:       "./build/src/coffee/*.coffee" #"./build/test-Coffee/*.coffee"
+  coffeePath:   "./build/src/coffee/" #"./build/test-Coffee/*.coffee"
 
 targets =
-  js:           "" #"./build/test-JS/" #todo doobido: Create a if else if args are empty
+  js:           "./build/src/js/" #"./build/test-JS/"
 
 ##########################################
 ############## Log Colors ################
@@ -44,15 +44,12 @@ gulp.task 'get-args', (source, target) ->
     if source.length > 0
       sources.coffeePath = "./build/#{source}/"
       sources.coffee = "./build/#{source}/*.coffee"
-    else
-      sources.coffeePath = "./build/src/coffee/"
-      sources.coffee = "./build/src/coffee/*.coffee"
     if target.length > 0
       targets.js     = "./build/#{target}/"
-    else
-      targets.js     = "./build/src/js/"
   else
-    gutil.log logColor.error "\Please, use: \'gulp --source your/source/folder --target your/target/folder\' \n or use: \'gulp --source --target\' to use \'./build/src/coffee/\' for source and \'./build/src/js/' for target\'"
+    gutil.log logColor.success "Using default path for --source and --target.
+    \n Use: \'gulp --source your/source/folder --target your/target/folder\'
+    \n if you like to change the default path temporarily."
 
 gulp.task 'browser-sync', ->
   fs.stat sources.coffeePath, (err, stat) ->
@@ -65,14 +62,13 @@ gulp.task 'browser-sync', ->
           debounceDelay: 1000
     else
     #you can make an error switch here to distinguish the error types
-    #todo doobido: prevent server from starting
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
       else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
 
 gulp.task 'write-coffee', ->
   gulp.src(sources.coffee)
   .pipe(coffee({bare: true}).on('error', gutil.log, 'end', gutil.log logColor.success "Successfully updated a file here: " + logColor.detail "#{targets.js}"))
-  .pipe(concat('test.js'))
+  .pipe(concat('app.js'))
   .pipe(gulp.dest(targets.js))
   #If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
 
@@ -89,7 +85,6 @@ gulp.task 'watch', ->
         gulp.start 'write-coffee'
     else
       #you can make an error switch here to distinguish the error types
-      #todo doobido: prevent server from starting
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
       else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
 
