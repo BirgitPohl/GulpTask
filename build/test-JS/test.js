@@ -18,8 +18,6 @@ add(function() {
   return number + number;
 });
 
-d;
-
-zerddxasxsodsddoo(function() {
+zero(function() {
   return number - number;
 });

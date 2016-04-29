@@ -10,6 +10,6 @@ multiply ->
 
 add ->
   number + number
-d
-zerddxasxsodsddoo ->
+
+zero ->
   number-number
