@@ -1,0 +1,18 @@
+.size {
+    display: block;
+    /*background-color: grey;*/
+    height:400px;
+    width: 500px;
+}
+
+.yellowBackground {
+    background-color: yellow;
+}
+
+.blueBackground {
+    background-color: #00cc99;
+}
+
+.greenBackground {
+    background-color: yellowgreen;
+}

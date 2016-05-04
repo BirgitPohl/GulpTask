@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type='text/javascript' src='../bower_components/knockout/dist/knockout.js'></script>
+    <!--<script type='text/javascript' src='http://knockoutjs.com/downloads/knockout-3.4.0.js'></script>-->
+    <script type='text/javascript' src='src/js/app.js'></script>
+
+    <link rel="stylesheet" href="src/css/app.css">
+
+    <title>Some Title</title>
+</head>
+<body>
+<h1>Creating an Observable<br></h1>
+
+<button  id="toTheLeft" data-bind="click: toTheLeft"><</button>
+<button  id="toTheRight" data-bind="click: toTheRight">></button>
+
+<!--<button  id="toTheLeft" data-bind="click: toTheLeft"><</button>-->
+<!--<button  id="toTheRight" data-bind="click: toTheRight">></button>-->
+
+<!--<div class="size theDiv" id="theDiv" data-bind='text: rotator'>nope</div>-->
+
+<div class="size theDiv" id="theDiv2" data-bind="with: result, style: { 'background-color': backColor }">
+    <div class="size theDiv" id="theDiv22" data-bind='text: name'>nope</div>
+</div>
+
+</body>
+</html>
