@@ -71,7 +71,7 @@ gulp.task 'write-coffee', ->
   .pipe(concat('app.js'))
   .pipe(gulp.dest(targets.js))
   #If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
-
+  #todo: after syntax error .src doesn't fire anymore: https://github.com/contra/gulp-coffee/issues/68
 
 gulp.task 'watch', ->
   #  gulp.watch sources.sass, ['style']
