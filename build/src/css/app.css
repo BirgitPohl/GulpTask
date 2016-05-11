@@ -1,18 +1,30 @@
 .size {
     display: block;
     /*background-color: grey;*/
-    height:400px;
+    height:200px;
     width: 500px;
 }
-
-.yellowBackground {
-    background-color: yellow;
+.font {
+    color: white;
+    font-size:50px;
 }
 
-.blueBackground {
-    background-color: #00cc99;
+/*.yellowBackground {*/
+    /*background-color: yellow;*/
+/*}*/
+
+/*.blueBackground {*/
+    /*background-color: #00cc99;*/
+/*}*/
+
+/*.greenBackground {*/
+    /*background-color: yellowgreen;*/
+/*}*/
+
+.displayBlock {
+    display: block!important; /*overwrite the other display if some things are true */
 }
 
-.greenBackground {
-    background-color: yellowgreen;
+.niceInputField {
+    display: none;
 }

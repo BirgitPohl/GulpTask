@@ -1,99 +1,70 @@
-ViewModel = ->
+ko.bindingHandlers.debug =
+  init: (element, valueAccessor) ->
+    console.log 'KnockoutBinding:'
+    console.log element
+    console.log ko.toJS(valueAccessor())
 
-  self = this
-  someArray = [
-    {name: "Box 1"},
-    {name: "Box 2"},
-    {name: "Box 3"}
-  ]
+contentTextArray = [
+  'Box 1'
+  'Box 2'
+  'Box 3'
+]
 
-#  cssBGArray = [
-#    {bgColor: "yellowBackground"},
-#    {bgColor: "blueBackground"},
-#    {bgColor: "greenBackground"}
-#  ]
+cssBGArray = [
+  '#00cc99'
+  'MediumOrchid'
+  'yellowgreen'
+]
+ ## .rotator.extend({ displayMessage: value}) ## trigger's even if the value is the same
+##Todo create ViewModel file
+class ViewModel
+  constructor: (rotator, contentText, backgroundColor, displayMessage, redChecked, greenChecked, blueChecked) ->
 
-  cssBGArray = [
-    '#00cc99'
-    'yellow'
-    'yellowgreen'
-  ]
-  self.rotator = ko.observable(0)
-  self.result = ko.observable(someArray[self.rotator()])
-  self.backColor = ko.observable(cssBGArray[self.rotator()])
+    @rotator            = ko.observable(rotator)
+    @contentText        = ko.computed =>
+      contentTextArray[@rotator()]
+    @backgroundColor    = ko.computed =>
+      cssBGArray[@rotator()]
+    @displayMessage     = ko.observable(displayMessage)
+    @redChecked         = ko.observable(redChecked)     ##boolean
+    @greenChecked       = ko.observable(greenChecked)   ##boolean
+    @blueChecked        = ko.observable(blueChecked)    ##boolean
+    @red                = ko.observable(0)
+    @green              = ko.observable(255)
+    @blue               = ko.observable(255)
+    @colorChecker       = ko.computed =>
+      if @redChecked()    is true then @red   255 else @red   0
+      if @greenChecked()  is true then @green 255 else @green 0
+      if @blueChecked()   is true then @blue  255 else @blue  0
+    @calculatedBGColor  = ko.computed =>
+      return "rgb(#{@red()},#{@green()},#{@blue()})"
 
-#  self.backColor = ko.pureComputed ->
-#    switch self.rotator()
-#      when 0 then return "yellowBackground"
-#      when 1 then return "blueBackground"
-#      else        return "greenBackground"
-#  ,self
+  #Instance attribute. Create this to specify certain attributes that all instances should have and that don't change.
+    #It goes inside the constructor
+    #@toTheLeft = ->
+    #console.log 'attr abc'
 
-  self.backColor = ko.computed ->
-    return cssBGArray[self.rotator()]
-    #todo this adds but doesn't remove a class as long as there
-
-  self.toTheLeft = ->
-    if self.rotator() > 0
-      self.rotator self.rotator() - 1
-#      self.result someArray[self.rotator()]
-#      return
+  #prototype attibute. Create this to define certain attributes that is available in all classes, but the value changes.
+  #For example: console.log @backgroundColor
+  ## Todo length is n? Right now it does not depends on the length of some array, but it can
+  toTheLeft : ->
+    if @rotator() > 0
+      @rotator @rotator() - 1
     else
-      self.rotator 2
-#      self.result someArray[self.rotator()]
-#      return
+      @rotator 2
 
-    self.result someArray[self.rotator()]
-    #self.backColor #cssBGArray[self.rotator()]
-
-
-  self.toTheRight = ->
-    if self.rotator() < 2
-      self.rotator self.rotator() + 1
-#      self.result someArray[self.rotator()]
-#      return
+  toTheRight : ->
+    if @rotator() < 2
+      @rotator @rotator() + 1
     else
-      self.rotator 0
-#      self.result someArray[self.rotator()]
-#      return
+      @rotator 0
+    return
 
-    self.result someArray[self.rotator()]
-    #self.backColor #cssBGArray[self.rotator()]
-
-  return
-
-#  self.toTheLeft = ->
-#    if self.rotator() > 1
-#      self.rotator self.rotator() - 1
-#      return
-#    else
-#      self.rotator 3
-#      return
-#
-#  self.toTheRight = ->
-#    if self.rotator() < 3
-#      self.rotator self.rotator() + 1
-#      return
-#    else
-#      self.rotator 1
-#      return
-#  return
-
-
-
-
-
-  #creates h.apply is not a function error, this may be an internal JQuery error
-#  $('#toTheRight').click ->
-#    self.rotator self.rotator() + 1
-#    return
-#  $('#toTheLeft').click ->
-#    self.rotator self.rotator() - 1
-#    return
-#  return
+#  setIsSelected : ->
+#    @displayMessage 'Congrats! You have successfully selected an input field!'
 
 $ ->
-  ko.applyBindings new ViewModel
-#  ko.applyBindings new ClickCounterViewModel
+  viewModel = new ViewModel(0, contentTextArray[0], cssBGArray[0], 'blubb', true, false, false)
+  ko.applyBindings viewModel, document.getElementById 'trigger'  ##needs one DOMelement to listen to.
   return
 

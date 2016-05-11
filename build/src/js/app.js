@@ -1,42 +1,85 @@
-var ViewModel;
+var ViewModel, contentTextArray, cssBGArray;
 
-ViewModel = function() {
-  var cssBGArray, self, someArray;
-  self = this;
-  someArray = [
-    {
-      name: "Box 1"
-    }, {
-      name: "Box 2"
-    }, {
-      name: "Box 3"
-    }
-  ];
-  cssBGArray = ['#00cc99', 'yellow', 'yellowgreen'];
-  self.rotator = ko.observable(0);
-  self.result = ko.observable(someArray[self.rotator()]);
-  self.backColor = ko.observable(cssBGArray[self.rotator()]);
-  self.backColor = ko.computed(function() {
-    return cssBGArray[self.rotator()];
-  });
-  self.toTheLeft = function() {
-    if (self.rotator() > 0) {
-      self.rotator(self.rotator() - 1);
-    } else {
-      self.rotator(2);
-    }
-    return self.result(someArray[self.rotator()]);
-  };
-  self.toTheRight = function() {
-    if (self.rotator() < 2) {
-      self.rotator(self.rotator() + 1);
-    } else {
-      self.rotator(0);
-    }
-    return self.result(someArray[self.rotator()]);
-  };
+ko.bindingHandlers.debug = {
+  init: function(element, valueAccessor) {
+    console.log('KnockoutBinding:');
+    console.log(element);
+    return console.log(ko.toJS(valueAccessor()));
+  }
 };
 
+contentTextArray = ['Box 1', 'Box 2', 'Box 3'];
+
+cssBGArray = ['#00cc99', 'MediumOrchid', 'yellowgreen'];
+
+ViewModel = (function() {
+  function ViewModel(rotator, contentText, backgroundColor, displayMessage, redChecked, greenChecked, blueChecked) {
+    this.rotator = ko.observable(rotator);
+    this.contentText = ko.computed((function(_this) {
+      return function() {
+        return contentTextArray[_this.rotator()];
+      };
+    })(this));
+    this.backgroundColor = ko.computed((function(_this) {
+      return function() {
+        return cssBGArray[_this.rotator()];
+      };
+    })(this));
+    this.displayMessage = ko.observable(displayMessage);
+    this.redChecked = ko.observable(redChecked);
+    this.greenChecked = ko.observable(greenChecked);
+    this.blueChecked = ko.observable(blueChecked);
+    this.red = ko.observable(0);
+    this.green = ko.observable(255);
+    this.blue = ko.observable(255);
+    this.colorChecker = ko.computed((function(_this) {
+      return function() {
+        if (_this.redChecked() === true) {
+          _this.red(255);
+        } else {
+          _this.red(0);
+        }
+        if (_this.greenChecked() === true) {
+          _this.green(255);
+        } else {
+          _this.green(0);
+        }
+        if (_this.blueChecked() === true) {
+          return _this.blue(255);
+        } else {
+          return _this.blue(0);
+        }
+      };
+    })(this));
+    this.calculatedBGColor = ko.computed((function(_this) {
+      return function() {
+        return "rgb(" + (_this.red()) + "," + (_this.green()) + "," + (_this.blue()) + ")";
+      };
+    })(this));
+  }
+
+  ViewModel.prototype.toTheLeft = function() {
+    if (this.rotator() > 0) {
+      return this.rotator(this.rotator() - 1);
+    } else {
+      return this.rotator(2);
+    }
+  };
+
+  ViewModel.prototype.toTheRight = function() {
+    if (this.rotator() < 2) {
+      this.rotator(this.rotator() + 1);
+    } else {
+      this.rotator(0);
+    }
+  };
+
+  return ViewModel;
+
+})();
+
 $(function() {
-  ko.applyBindings(new ViewModel);
+  var viewModel;
+  viewModel = new ViewModel(0, contentTextArray[0], cssBGArray[0], 'blubb', true, false, false);
+  ko.applyBindings(viewModel, document.getElementById('trigger'));
 });
