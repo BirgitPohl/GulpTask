@@ -5,9 +5,9 @@ ko.bindingHandlers.debug =
     console.log ko.toJS(valueAccessor())
 
 contentTextArray = [
-  'Box 1'
-  'Box 2'
-  'Box 3'
+  'ff32d'
+  'z'
+  'Hssave fun!'
 ]
 
 cssBGArray = [
@@ -15,29 +15,30 @@ cssBGArray = [
   'MediumOrchid'
   'yellowgreen'
 ]
- ## .rotator.extend({ displayMessage: value}) ## trigger's even if the value is the same
+ ## .rotator.extend({ displaYMessage: value}) ## trigger's even if the value is the same
 ##Todo create ViewModel file
 class ViewModel
-  constructor: (rotator, contentText, backgroundColor, displayMessage, redChecked, greenChecked, blueChecked) ->
+  constructor: (rotator, contentText, backgroundColor, displayMessage, redChecked, greenChecked, blueChecked, inputHasFocus ) ->
 
     @rotator            = ko.observable(rotator)
     @contentText        = ko.computed =>
       contentTextArray[@rotator()]
     @backgroundColor    = ko.computed =>
       cssBGArray[@rotator()]
+    @checkCheckbox      = ko.observableArray([]) ## Radio boxes set the Array to a non-Array
+
+    ## Todo save array before the event
+    ## Todo get rid of syntax error
+    ## Todo See what kind of magic happens
+#    @lastCheckedItem    = ko.computed =>
+#      currentArray([])
+#      l for l in @checkCheckbox hangedArray([]).push(@checkCheckbox)
+#      if currentArray.length > changedArray.length
+#        i for i in currentArray when currentArray() is not changedArray()
+#          return changedArray()
+
+    @inputHasFocus      = ko.observable(inputHasFocus)
     @displayMessage     = ko.observable(displayMessage)
-    @redChecked         = ko.observable(redChecked)     ##boolean
-    @greenChecked       = ko.observable(greenChecked)   ##boolean
-    @blueChecked        = ko.observable(blueChecked)    ##boolean
-    @red                = ko.observable(0)
-    @green              = ko.observable(255)
-    @blue               = ko.observable(255)
-    @colorChecker       = ko.computed =>
-      if @redChecked()    is true then @red   255 else @red   0
-      if @greenChecked()  is true then @green 255 else @green 0
-      if @blueChecked()   is true then @blue  255 else @blue  0
-    @calculatedBGColor  = ko.computed =>
-      return "rgb(#{@red()},#{@green()},#{@blue()})"
 
   #Instance attribute. Create this to specify certain attributes that all instances should have and that don't change.
     #It goes inside the constructor
@@ -50,21 +51,24 @@ class ViewModel
   toTheLeft : ->
     if @rotator() > 0
       @rotator @rotator() - 1
+      return true
     else
       @rotator 2
+      return true
 
   toTheRight : ->
     if @rotator() < 2
       @rotator @rotator() + 1
+      return true
     else
       @rotator 0
+      return true
     return
-
 #  setIsSelected : ->
 #    @displayMessage 'Congrats! You have successfully selected an input field!'
 
 $ ->
-  viewModel = new ViewModel(0, contentTextArray[0], cssBGArray[0], 'blubb', true, false, false)
+  viewModel = new ViewModel(0, contentTextArray[0], cssBGArray[0], 'blubb', true, false, false, false)
   ko.applyBindings viewModel, document.getElementById 'trigger'  ##needs one DOMelement to listen to.
   return
 

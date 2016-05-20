@@ -2,63 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="../node_modules/browser-reload/reload.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type='text/javascript' src='../bower_components/knockout/dist/knockout.js'></script>
-    <!--<script type='text/javascript' src='http://knockoutjs.com/downloads/knockout-3.4.0.js'></script>-->
-    <script type='text/javascript' src='src/js/app.js'></script>
-
     <link rel="stylesheet" href="src/css/app.css">
 
-    <title>Some Title</title>
+    <title>Some Tc45464idtle</title>
 </head>
 <body data-bind="debug: $data">
-<h1>Creating an Observable<br></h1>
+<h1>give me three<br></h1>
 
 <div id="trigger"><button  id="toTheLeft" data-bind="click: toTheLeft"><</button>
-    <button  id="toTheRight" data-bind="click: toTheRight">></button>
+    <button  id="toTheRight" data-bind="click: toTheRight">>s</button>
 
     <div class="theDiv" id="theDiv2" data-bind="style: { 'backgroundColor': backgroundColor }">
-        <div class="size font theDiv" id="theDiv22" data-bind='text: contentText, text: displayMessage'>
+        <div class="size font theDiv" id="theDiv22">
         </div>
         <p>
-            <button data-bind="click: $root.rotator.bind($root, 0)" >Button 1</button>
-            <button data-bind="click: $root.rotator.bind($root, 1)" >Button 2</button>
-            <button data-bind="click: $root.rotator.bind($root, 2)" >Button 3</button>
+            <input type="text" placeholder="1" class="niceInputField" data-bind="css: { displayBlock: rotator() == 0 }, hasFocus: inputHasFocus" />
+            <input type="text" placeholder="2" class="niceInputField" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
+            <input type="text" placeholder="3" class="niceInputField" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
         </p>
-        <p>
-            <!--    Todo if I click on one checkbox, the click event trigger, but it does not check it.
-                    Todo Also If I click again, to uncheck it, it does not uncheck it.
-             -->
-            <label><input type="checkbox" data-bind="click: $root.rotator.bind($root, 0), checked: rotator() == 0 " />Display 1</label>
-            <label><input type="checkbox" data-bind="click: $root.rotator.bind($root, 1), checked: rotator() == 1 " />Display 2</label>
-            <label><input type="checkbox" data-bind="click: $root.rotator.bind($root, 2), checked: rotator() == 2 " />Display 3</label>
-        </p>
-        <p>
-            <!--    Todo this is not checked at all
-             -->
-            <label><input type="radio" data-bind="click: function() { return $root.rotator.bind($root, 0)}, checked: rotator() == 0 " /> Display 1</label>
-            <label><input type="radio" data-bind="click: $root.rotator.bind($root, 1), checked: rotator() == 1 " /> Display 2</label>
-            <label><input type="radio" data-bind="click: $root.rotator.bind($root, 2), checked: rotator() == 2 " /> Display 3</label>
-        </p>
-        <p>
-            <input type="text" placeholder="1" class="niceInputField" data-bind="css: { displayBlock: rotator() == 0 }, hasFocus: displayMessage('You\'ve successfully selected the first input field!')" />
-            <input type="text" placeholder="2" class="niceInputField" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: displayMessage('You\'ve successfully selected the second input field!')" />
-            <input type="text" placeholder="3" class="niceInputField" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: displayMessage('You\'ve successfully selected the third input field!')" />
-        </p>
+        <button data-bind="click: toTheRight, text: contentText">></button>
     </div>
-
-    <div class="  size" id="theDiv3" data-bind="style: { 'backgroundColor': calculatedBGColor }, text: calculatedBGColor">
-    </div>
-    <p>
-        <label><input type="checkbox" data-bind="checked: redChecked" />red</label>
-        <label><input type="checkbox" data-bind="checked: greenChecked" />green</label>
-        <label><input type="checkbox" data-bind="checked: blueChecked" />blue</label>
-    </p>
-    <p>red: <input type="range" min="0" max="255" value="200" data-bind="value: red"></p>
-    <p>green: <input type="range" min="0" max="255" value="255"data-bind="value: green"></p>
-    <p>blue: <input type="range" min="0" max="255" value="0"data-bind="value: blue"></p>
 
 </div>
 
 </body>
+
+<!--<script async src="../node_modules/browser-reload/reload.min.js"></script>-->
+<!--<script async type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+<!--<script async type='text/javascript' src='../bower_components/knockout/dist/knockout.js'></script>-->
+<!--<script type='text/javascript' src='http://knockoutjs.com/downloads/knockout-3.4.0.js'></script>-->
+<script async type='text/javascript' src='src/js/app.js'></script>
+
 </html>

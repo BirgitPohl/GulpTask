@@ -8,6 +8,8 @@ gutil         = require 'gulp-util'
 fs            = require 'fs'
 chalk         = require 'chalk'
 clean         = require 'gulp-clean'
+reload        = browserSync.reload
+opn           = require 'opn'
 
 ##########################################
 ########### Sources & Targets ############
@@ -55,11 +57,21 @@ gulp.task 'browser-sync', ->
   fs.stat sources.coffeePath, (err, stat) ->
     if err is null
       browserSync.init null,
-        open: false  #prevents opening a windows in default browser
+#        root: './build'
+        livereload: true
+#        proxy    : 'http://localhost:3000'
+        port     : 3000
+        open: false
+        browser: 'Google Chrome'
+        notify: true ##false if you don't want the small popup
+        injectChanges: true #somehow descripted for css use only
+        codeSync: true #if true, sends file changes to browsers
         server:
-          baseDir: sources.coffeePath
+          baseDir: './' ##sources.coffeePath
         watchOptions:
           debounceDelay: 1000
+          reloadDelay:2000
+      opn 'http://localhost:3000/build'
     else
     #you can make an error switch here to distinguish the error types
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
@@ -70,22 +82,33 @@ gulp.task 'write-coffee', ->
   .pipe(coffee({bare: true}).on('error', gutil.log, 'end', gutil.log logColor.success "Successfully updated a file here: " + logColor.detail "#{targets.js}"))
   .pipe(concat('app.js'))
   .pipe(gulp.dest(targets.js))
-  #If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
+  .pipe(browserSync.stream());
+
+#If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
   #todo: after syntax error .src doesn't fire anymore: https://github.com/contra/gulp-coffee/issues/68
+  #Todo: error log is just cryptic shit
 
 gulp.task 'watch', ->
   #  gulp.watch sources.sass, ['style']
   #  gulp.watch sources.app, ['lint', 'src', 'html']
-  #  gulp.watch sources.html, ['html']
+  gulp.watch sources.html, ['html']
+  gulp.watch("./build/index.html").on('change', reload)
 
   fs.stat sources.coffeePath, (err, stat) ->
     if err is null
-      gulp.watch sources.coffee, (file) ->
-        browserSync.reload(file.path) if file.type is "changed"
+      
+      gulp.watch sources.coffee, ->
         gulp.start 'write-coffee'
+        browserSync.reload()
+        gulp.start 'browser-reload'
+
     else
       #you can make an error switch here to distinguish the error types
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
       else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
 
+gulp.task 'browser-reload', ->
+  
+      
 gulp.task 'default', ['get-args', 'browser-sync', 'watch'], ->
+  http.createServer( ecstatic( root: __dirname ) ).listen(5000)
