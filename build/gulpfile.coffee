@@ -7,20 +7,26 @@ concat        = require 'gulp-concat'
 gutil         = require 'gulp-util'
 fs            = require 'fs'
 chalk         = require 'chalk'
-clean         = require 'gulp-clean'
+#clean         = require 'gulp-clean'
 reload        = browserSync.reload
-opn           = require 'opn'
+opn           = require 'opn' #browserSync always opens root based on basePath, OPN opens everything. Fire after browserSync.init
+jasmine       = require 'gulp-jasmine' #for testing purposes
 
 ##########################################
 ########### Sources & Targets ############
 ##########################################
 
 sources =
-  coffee:       "./build/src/coffee/*.coffee" #"./build/test-Coffee/*.coffee"
-  coffeePath:   "./build/src/coffee/" #"./build/test-Coffee/*.coffee"
+  coffee:       "./build/src/coffee/*.coffee"
+  coffeePath:   "./build/src/coffee/"
+  test:         "./build/src/unit-tests/*.coffee"
+  testPath:     "./build/src/unit-tests/"
+  css:          "./build/src/css/*.css"
+  cssPath:      "./build/src/css/"
 
 targets =
-  js:           "./build/src/js/" #"./build/test-JS/"
+  js:           "./build/src/js/"
+  
 
 ##########################################
 ############## Log Colors ################
@@ -36,11 +42,11 @@ logColor =
 ##########################################
 ############# Watching files #############
 ##########################################
+## Gulp Clean removes files and folders. and it is debricated
+#gulp.task 'clean', ->
+#  gulp.src([targets.js], {read: false}).pipe(clean())
 
-gulp.task 'clean', ->
-  gulp.src([targets.js], {read: false}).pipe(clean())
-
-
+############# Getting the Arguments from the Comand Line #############
 gulp.task 'get-args', (source, target) ->
   if typeof source is 'string' and typeof target is 'string'
     if source.length > 0
@@ -53,6 +59,7 @@ gulp.task 'get-args', (source, target) ->
     \n Use: \'gulp --source your/source/folder --target your/target/folder\'
     \n if you like to change the default path temporarily."
 
+############# Starting the Server with a Browser #############
 gulp.task 'browser-sync', ->
   fs.stat sources.coffeePath, (err, stat) ->
     if err is null
@@ -69,7 +76,7 @@ gulp.task 'browser-sync', ->
         server:
           baseDir: './' ##sources.coffeePath
         watchOptions:
-          debounceDelay: 1000
+          reloadDebounce: 2000
           reloadDelay:2000
       opn 'http://localhost:3000/build'
     else
@@ -77,6 +84,7 @@ gulp.task 'browser-sync', ->
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
       else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
 
+############# Writing Coffee to JS #############
 gulp.task 'write-coffee', ->
   gulp.src(sources.coffee)
   .pipe(coffee({bare: true}).on('error', gutil.log, 'end', gutil.log logColor.success "Successfully updated a file here: " + logColor.detail "#{targets.js}"))
@@ -84,31 +92,63 @@ gulp.task 'write-coffee', ->
   .pipe(gulp.dest(targets.js))
   .pipe(browserSync.stream());
 
+gulp.task 'write-test', ->
+  gulp.src(sources.test)
+  .pipe(coffee({bare: true}).on('error', gutil.log, 'end', gutil.log logColor.success "Successfully updated a file here: " + logColor.detail "#{targets.js}"))
+  .pipe(concat('test.js'))
+  .pipe(gulp.dest(targets.js))
+  .pipe(browserSync.stream());
 #If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
   #todo: after syntax error .src doesn't fire anymore: https://github.com/contra/gulp-coffee/issues/68
   #Todo: error log is just cryptic shit
 
+############# Starting Watch Tasks #############
 gulp.task 'watch', ->
   #  gulp.watch sources.sass, ['style']
   #  gulp.watch sources.app, ['lint', 'src', 'html']
+  gulp.watch(sources.css).on('change', reload)
   gulp.watch sources.html, ['html']
   gulp.watch("./build/index.html").on('change', reload)
 
+  ############# Watch Tests #############
+  fs.stat sources.testPath, (err, stat) ->
+    if err is null
+
+      gulp.watch sources.test, ->
+        gulp.start 'write-test'
+        browserSync.reload()
+
+    else
+      #you can make an error switch here to distinguish the error types
+      if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.test} \n Target: #{targets.js}"
+      else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
+
+  ############# Watch App Tasks #############
   fs.stat sources.coffeePath, (err, stat) ->
     if err is null
       
       gulp.watch sources.coffee, ->
         gulp.start 'write-coffee'
         browserSync.reload()
-        gulp.start 'browser-reload'
 
     else
       #you can make an error switch here to distinguish the error types
       if err.code is 'ENOENT' then gutil.log logColor.error "Error code: #{err.code} \n File or folder does not exist. \n It is: #{stat} \n Source: #{sources.coffee} \n Target: #{targets.js}"
       else gutil.log logColor.error "Error code: #{err.code} \n Please look up here: https://nodejs.org/api/errors.html#errors_error_code."
 
-gulp.task 'browser-reload', ->
-  
-      
+##########################################
+############ Test, test, test ############
+##########################################
+#https://www.npmjs.com/package/gulp-jasmine
+
+gulp.task 'jasmine', ->
+  gulp.src "#{targets.js}test.js"
+  .pipe(jasmine())
+
+##########################################
+################## FIRE! #################
+##########################################
 gulp.task 'default', ['get-args', 'browser-sync', 'watch'], ->
   http.createServer( ecstatic( root: __dirname ) ).listen(5000)
+  ##Todo check if I need it
+  gulp.start 'jasmine'

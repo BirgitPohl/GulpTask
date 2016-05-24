@@ -7,23 +7,29 @@
     <script type='text/javascript' src='../bower_components/knockout/dist/knockout.js'></script>
     <link rel="stylesheet" href="src/css/app.css">
 
-    <title>Some Tc45464idtle</title>
+    <title>Some Title</title>
 </head>
 <body data-bind="debug: $data">
 <h1>give me three<br></h1>
 
-<div id="trigger"><button  id="toTheLeft" data-bind="click: toTheLeft"><</button>
-    <button  id="toTheRight" data-bind="click: toTheRight">>s</button>
+<div id="trigger">
+    <!--<button  id="toTheLeft" data-bind="click: toTheLeft"><</button>-->
+    <!--<button  id="toTheRight" data-bind="click: toTheRight">></button>-->
 
-    <div class="theDiv" id="theDiv2" data-bind="style: { 'backgroundColor': backgroundColor }">
+    <div class="container" id="theDiv2" data-bind="style: { 'backgroundColor': backgroundColor }">
         <div class="size font theDiv" id="theDiv22">
         </div>
         <p>
-            <input type="text" placeholder="1" class="niceInputField" data-bind="css: { displayBlock: rotator() == 0 }, hasFocus: inputHasFocus" />
-            <input type="text" placeholder="2" class="niceInputField" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
-            <input type="text" placeholder="3" class="niceInputField" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
+            <input type="text" placeholder="Enter your email" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 0 }, hasFocus: inputHasFocus" />
+            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 0 }" />
+            <input type="text" placeholder="2" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
+            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
+            <input type="text" placeholder="3" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
+            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
         </p>
-        <button data-bind="click: toTheRight, text: contentText">></button>
+        <div class="center loginButtonContainer">
+            <button class="loginButton displayNone" data-bind="click: toTheLeft, css: { displayBlock: rotator() > 0 }">Previous</button> <button class="loginButton" data-bind="click: toTheRight, text: contentText">blubb</button>
+        </div>
     </div>
 
 </div>

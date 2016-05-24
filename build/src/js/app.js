@@ -8,7 +8,7 @@ ko.bindingHandlers.debug = {
   }
 };
 
-contentTextArray = ['ff32d', 'z', 'Hssave fun!'];
+contentTextArray = ['Next', 'Continue', 'Have fun!'];
 
 cssBGArray = ['#00cc99', 'MediumOrchid', 'yellowgreen'];
 

@@ -5,11 +5,10 @@ ko.bindingHandlers.debug =
     console.log ko.toJS(valueAccessor())
 
 contentTextArray = [
-  'ff32d'
-  'z'
-  'Hssave fun!'
+  'Next'
+  'Continue'
+  'Have fun!'
 ]
-
 cssBGArray = [
   '#00cc99'
   'MediumOrchid'

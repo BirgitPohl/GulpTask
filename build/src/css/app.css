@@ -1,6 +1,12 @@
+body {
+    margin: 0 0 0 0;
+}
+.container {
+    padding: 30px;
+    margin: 0 0 0 0;
+}
 .size {
     display: block;
-    /*background-color: grey;*/
     height:200px;
     width: 500px;
 }
@@ -9,22 +15,22 @@
     font-size:50px;
 }
 
-/*.yellowBackground {*/
-    /*background-color: yellow;*/
-/*}*/
-
-/*.blueBackground {*/
-    /*background-color: #00cc99;*/
-/*}*/
-
-/*.greenBackground {*/
-    /*background-color: yellowgreen;*/
-/*}*/
-
 .displayBlock {
-    display: block!important; /*overwrite the other display if some things are true */
+    display: block!important; /*overwrite the other display if some things in app.coffee are true */
+}
+.displayNone {
+    display: none;
 }
 
 .niceInputField {
-    display: none;
+    width: 500px;
+}
+.loginButton {
+    display: inline;
+}
+.loginButtonContainer {
+    width: 200px;
+}
+.center {
+    margin: 20px auto 20px auto;
 }
