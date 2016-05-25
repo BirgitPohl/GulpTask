@@ -1,4 +1,4 @@
-var ViewModel, contentTextArray, cssBGArray;
+var ViewModel, nextButtonTextArray;
 
 ko.bindingHandlers.debug = {
   init: function(element, valueAccessor) {
@@ -8,26 +8,19 @@ ko.bindingHandlers.debug = {
   }
 };
 
-contentTextArray = ['Next', 'Continue', 'Have fun!'];
-
-cssBGArray = ['#00cc99', 'MediumOrchid', 'yellowgreen'];
+nextButtonTextArray = ['Next', 'Continue', 'Yes!'];
 
 ViewModel = (function() {
-  function ViewModel(rotator, contentText, backgroundColor, displayMessage, redChecked, greenChecked, blueChecked, inputHasFocus) {
+  function ViewModel(rotator, nextButtonText, inputHasFocus) {
     this.rotator = ko.observable(rotator);
-    this.contentText = ko.computed((function(_this) {
+    this.nextButtonText = ko.computed((function(_this) {
       return function() {
-        return contentTextArray[_this.rotator()];
+        return nextButtonTextArray[_this.rotator()];
       };
     })(this));
-    this.backgroundColor = ko.computed((function(_this) {
-      return function() {
-        return cssBGArray[_this.rotator()];
-      };
-    })(this));
-    this.checkCheckbox = ko.observableArray([]);
+    this.userName = ko.observable();
+    this.emailAddress = ko.observable();
     this.inputHasFocus = ko.observable(inputHasFocus);
-    this.displayMessage = ko.observable(displayMessage);
   }
 
   ViewModel.prototype.toTheLeft = function() {
@@ -56,6 +49,6 @@ ViewModel = (function() {
 
 $(function() {
   var viewModel;
-  viewModel = new ViewModel(0, contentTextArray[0], cssBGArray[0], 'blubb', true, false, false, false);
+  viewModel = new ViewModel(0, nextButtonTextArray[0], true);
   ko.applyBindings(viewModel, document.getElementById('trigger'));
 });

@@ -1,6 +1,9 @@
 body {
     margin: 0 0 0 0;
 }
+h3 {
+    text-align: center;
+}
 .container {
     padding: 30px;
     margin: 0 0 0 0;
@@ -29,7 +32,7 @@ body {
     display: inline;
 }
 .loginButtonContainer {
-    width: 200px;
+    width: 300px;
 }
 .center {
     margin: 20px auto 20px auto;

@@ -11,6 +11,11 @@ chalk         = require 'chalk'
 reload        = browserSync.reload
 opn           = require 'opn' #browserSync always opens root based on basePath, OPN opens everything. Fire after browserSync.init
 jasmine       = require 'gulp-jasmine' #for testing purposes
+KarmaServer   = require('karma').Server
+#KarmaServer   = new Server({port:9876}, (exitCode) ->
+#  gutil.log "Karma has exitec with #{exitCode}"
+#  process.exit(exitCode)
+#)
 
 ##########################################
 ########### Sources & Targets ############
@@ -95,7 +100,7 @@ gulp.task 'write-coffee', ->
 gulp.task 'write-test', ->
   gulp.src(sources.test)
   .pipe(coffee({bare: true}).on('error', gutil.log, 'end', gutil.log logColor.success "Successfully updated a file here: " + logColor.detail "#{targets.js}"))
-  .pipe(concat('test.js'))
+  .pipe(concat('testSpec.js'))
   .pipe(gulp.dest(targets.js))
   .pipe(browserSync.stream());
 #If gutil.log or console.log comes after this, the function never finished. It will trigger once, but not many times.
@@ -141,9 +146,15 @@ gulp.task 'watch', ->
 ##########################################
 #https://www.npmjs.com/package/gulp-jasmine
 
-gulp.task 'jasmine', ->
-  gulp.src "#{targets.js}test.js"
-  .pipe(jasmine())
+
+gulp.task 'jasmine', ['write-coffee', 'write-test'], (done) ->
+  new KarmaServer({
+    configFile: __dirname + '/../karma.conf.js',
+    singleRun: true
+  }, done).start();
+#  return
+#  gulp.src "#{targets.js}test.js"
+#  .pipe(jasmine())
 
 ##########################################
 ################## FIRE! #################

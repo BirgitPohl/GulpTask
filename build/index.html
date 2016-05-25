@@ -16,19 +16,43 @@
     <!--<button  id="toTheLeft" data-bind="click: toTheLeft"><</button>-->
     <!--<button  id="toTheRight" data-bind="click: toTheRight">></button>-->
 
-    <div class="container" id="theDiv2" data-bind="style: { 'backgroundColor': backgroundColor }">
+    <div class="container" id="theDiv2">
         <div class="size font theDiv" id="theDiv22">
         </div>
-        <p>
-            <input type="text" placeholder="Enter your email" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 0 }, hasFocus: inputHasFocus" />
-            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 0 }" />
-            <input type="text" placeholder="2" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
-            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 1 }, hasFocus: inputHasFocus" />
-            <input type="text" placeholder="3" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
-            <input type="password" placeholder="Enter your desired password" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 2 }, hasFocus: inputHasFocus" />
+
+        <h3 class="displayNone"
+            data-bind="css: {displayBlock: rotator() == 0}">Registration</h3>
+        <input type="text"
+               placeholder="Enter your user name"
+               id = "userName"
+               class="center niceInputField displayNone"
+               data-bind="textInput: userName, css: { displayBlock: rotator() == 0 }" />
+        <input type="text"
+               placeholder="Enter your user email address"
+               id="emailAddress"
+               class="center niceInputField displayNone"
+               data-bind="textInput: emailAddress, css: { displayBlock: rotator() == 0 }" />
+
+        <h3 class="displayNone"
+            data-bind="css: {displayBlock: rotator() == 1}">Hello, <span data-bind="text: userName "></span>! Please, enter your password.</h3>
+        <input type="password"
+               placeholder="Enter your password here"
+               class="center niceInputField displayNone"
+               data-bind="css: { displayBlock: rotator() == 1 }" />
+        <input type="password" placeholder="Enter again to verify" class="center niceInputField displayNone" data-bind="css: { displayBlock: rotator() == 1 }" />
+        <p class="center niceInputField displayNone"
+           data-bind="text: ,css: { displayBlock: rotator() == 1 }" />
+
+        <h3 class="displayNone"
+            data-bind="css: {displayBlock: rotator() == 2}">Please, verify your settings. Do you wish to continue?</h3>
+        <p class="center niceInputField displayNone"
+           data-bind="css: { displayBlock: rotator() == 2 }">
+            Your user name is:      <span data-bind="text: userName"></span>
+            <br/>
+            Your email address is:  <span data-bind="text: emailAddress"></span>
         </p>
         <div class="center loginButtonContainer">
-            <button class="loginButton displayNone" data-bind="click: toTheLeft, css: { displayBlock: rotator() > 0 }">Previous</button> <button class="loginButton" data-bind="click: toTheRight, text: contentText">blubb</button>
+            <button class="loginButton displayNone" data-bind="click: toTheLeft, css: { displayBlock: rotator() > 0 }">Previous</button> <button class="loginButton" data-bind="click: toTheRight, text: nextButtonText">blubb</button>
         </div>
     </div>
 

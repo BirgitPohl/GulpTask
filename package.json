@@ -24,8 +24,12 @@
     "gulp-jshint": "^2.0.0",
     "gulp-livereload": "^3.8.1",
     "gulp-watch": "^4.3.5",
+    "jasmine-core": "^2.4.1",
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.1.0",
-    "run-sequence": "^1.1.5"
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-requirejs": "^1.0.0"
   }
 }
