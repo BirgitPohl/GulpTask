@@ -1,3 +1,15 @@
+var vm;
+
+vm = new ViewModel(0, nextButtonTextArray[0], true);
+
+describe("I'm on the registration page", function() {
+  var state;
+  state = vm.rotator();
+  return it("bla", function() {
+    return expect(state).toBe(0);
+  });
+});
+
 describe("I'm on the Enter-the-password page", function() {
   var a;
   a = false;

@@ -14,8 +14,8 @@ nextButtonTextArray = [
 class ViewModel
   constructor: (rotator, nextButtonText, inputHasFocus ) ->
 
-    @rotator            = ko.observable(rotator)
-    @nextButtonText        = ko.computed =>
+    @rotator             = ko.observable(rotator)
+    @nextButtonText      = ko.computed =>
       nextButtonTextArray[@rotator()]
 
     @userName            = ko.observable()

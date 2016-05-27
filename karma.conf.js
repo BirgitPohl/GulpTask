@@ -21,6 +21,7 @@ module.exports = function(config) {
       "bower_components/knockout/dist/knockout.js",
       'build/src/source/jquery-1.7.2.min.js',
       'node_modules/requirejs/require.js',
+      'build/src/js/app.js',
       {pattern: 'build/src/js/*.js'}
     ],
 
