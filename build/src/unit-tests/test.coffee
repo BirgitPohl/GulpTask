@@ -1,3 +1,4 @@
+## Start Testing with command: gulp jasmine
 vm = new ViewModel(0, nextButtonTextArray[0], true)
 
 describe "After opening the login page I want to check the state and", ->

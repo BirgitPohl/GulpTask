@@ -9,7 +9,7 @@ nextButtonTextArray = [
   'Continue'
   'Yes!'
 ]
- ## .rotator.extend({ displaYMessage: value}) ## trigger's even if the value is the same
+ ## .rotator.extend({ displayMessage: value}) ## trigger's even if the value is the same
 ##Todo create ViewModel file
 class ViewModel
   constructor: (rotator, nextButtonText, inputHasFocus ) ->
@@ -31,7 +31,6 @@ class ViewModel
 #      if currentArray.length > changedArray.length
 #        i for i in currentArray when currentArray() is not changedArray()
 #          return changedArray()
-    ##Todo if there are two input fields with hasFocus true, it gets messed up
     @inputHasFocus      = ko.observable(inputHasFocus)
     #@displayMessage     = ko.observable(displayMessage)
 
