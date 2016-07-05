@@ -10,3 +10,6 @@ gulp jasmine
 
 ## Start the server
 Run `gulp` on the command line.
+
+## Start a test
+Run `gulp jasmine` on the command line.
