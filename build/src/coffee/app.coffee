@@ -4,23 +4,25 @@ ko.bindingHandlers.debug =
     console.log element
     console.log ko.toJS(valueAccessor())
 
-nextButtonTextArray = [
-  'Next'
-  'Continue'
-  'Yes!'
-]
+
  ## .rotator.extend({ displayMessage: value}) ## trigger's even if the value is the same
 ##Todo create ViewModel file
 class ViewModel
-  constructor: (rotator, nextButtonText, inputHasFocus ) ->
+  constructor: (rotator, inputHasFocus ) ->
+    @nextButtonTextArray = [
+      'Next'
+      'Continue'
+      'Yes!'
+    ]
 
     @rotator             = ko.observable(rotator)
     @nextButtonText      = ko.computed =>
-      nextButtonTextArray[@rotator()]
+      @nextButtonTextArray[@rotator()]
 
     @userName            = ko.observable()
     @emailAddress        = ko.observable()
 
+    #@nextButtonTextArray.subscribe
 
     ## Todo save array before the event
     ## Todo get rid of syntax error
@@ -62,8 +64,11 @@ class ViewModel
 #  setIsSelected : ->
 #    @displayMessage 'Congrats! You have successfully selected an input field!'
 
+  spy_on_left: =>
+    @toTheLeft()
+
 $ ->
-  viewModel = new ViewModel(0, nextButtonTextArray[0], true)
+  viewModel = new ViewModel(0, true)
   ko.applyBindings viewModel, document.getElementById 'trigger'  ##needs one DOMelement to listen to.
   return
 

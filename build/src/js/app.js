@@ -1,4 +1,5 @@
-var ViewModel, nextButtonTextArray;
+var ViewModel,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ko.bindingHandlers.debug = {
   init: function(element, valueAccessor) {
@@ -8,14 +9,14 @@ ko.bindingHandlers.debug = {
   }
 };
 
-nextButtonTextArray = ['Next', 'Continue', 'Yes!'];
-
 ViewModel = (function() {
-  function ViewModel(rotator, nextButtonText, inputHasFocus) {
+  function ViewModel(rotator, inputHasFocus) {
+    this.spy_on_left = bind(this.spy_on_left, this);
+    this.nextButtonTextArray = ['Next', 'Continue', 'Yes!'];
     this.rotator = ko.observable(rotator);
     this.nextButtonText = ko.computed((function(_this) {
       return function() {
-        return nextButtonTextArray[_this.rotator()];
+        return _this.nextButtonTextArray[_this.rotator()];
       };
     })(this));
     this.userName = ko.observable();
@@ -43,12 +44,16 @@ ViewModel = (function() {
     }
   };
 
+  ViewModel.prototype.spy_on_left = function() {
+    return this.toTheLeft();
+  };
+
   return ViewModel;
 
 })();
 
 $(function() {
   var viewModel;
-  viewModel = new ViewModel(0, nextButtonTextArray[0], true);
+  viewModel = new ViewModel(0, true);
   ko.applyBindings(viewModel, document.getElementById('trigger'));
 });

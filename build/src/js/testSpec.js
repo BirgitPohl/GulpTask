@@ -1,8 +1,43 @@
 var vm;
 
-vm = new ViewModel(0, nextButtonTextArray[0], true);
+vm = new ViewModel(0, true);
 
-describe("After opening the login page I want to check the state and", function() {
+describe('What is a double, dummy, fake, stub, mock and a spy?', function() {
+  afterEach(function() {
+    return vm.rotator(0);
+  });
+  it('tests a Dummy like this', function() {
+    return expect(true).toBe(true);
+  });
+  it('tests a Fake like this', function() {
+    vm.nextButtonTextArray = ["I'm first", "I'm second", "I'm thirsty"];
+    vm.rotator(1);
+    vm.rotator(0);
+    expect(vm.nextButtonText()).toBe("I'm first");
+    vm.rotator(1);
+    return expect(vm.nextButtonText()).toBe("I'm second");
+  });
+  it('tests a Stub like this', function() {
+    spyOn(vm, 'spy_on_left').and.callFake(function() {
+      return this.toTheRight();
+    });
+    vm.spy_on_left();
+    expect(vm.spy_on_left.calls.count()).toEqual(1);
+    return expect(vm.rotator()).toBe(1);
+  });
+  it('tests a Mock like this', function() {
+    spyOn(vm, 'spy_on_left').and.callThrough().and.returnValue(true);
+    return expect(vm.spy_on_left()).toEqual(true);
+  });
+  return it('tests a Spy like this', function() {
+    spyOn(vm, 'spy_on_left').and.callThrough();
+    vm.spy_on_left();
+    expect(vm.spy_on_left.calls.count()).toEqual(1);
+    return expect(vm.rotator()).toBe(2);
+  });
+});
+
+xdescribe("After opening the login page I want to check the state and", function() {
   var myEmailAddress, myUsername;
   myUsername = 'Peddington Bear';
   myEmailAddress = 'peddy@bear.com.uk';
