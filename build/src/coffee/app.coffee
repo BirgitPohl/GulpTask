@@ -21,6 +21,7 @@ class ViewModel
 
     @userName            = ko.observable()
     @emailAddress        = ko.observable()
+    @password            = ko.observable()
 
     #@nextButtonTextArray.subscribe
 
