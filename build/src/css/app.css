@@ -1,6 +1,9 @@
 body {
     margin: 0 0 0 0;
 }
+h1 {
+    text-align: center;
+}
 h3 {
     text-align: center;
 }
@@ -19,7 +22,7 @@ h3 {
 }
 
 .displayBlock {
-    display: block!important; /*overwrite the other display if some things in app.coffee are true */
+    display: block!important; /*overwrites the other display if some values in app.coffee are true */
 }
 .displayNone {
     display: none;
@@ -32,7 +35,7 @@ h3 {
     display: inline;
 }
 .loginButtonContainer {
-    width: 300px;
+    width: 310px;
 }
 .center {
     margin: 20px auto 20px auto;

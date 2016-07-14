@@ -8,7 +8,7 @@ ko.bindingHandlers.debug =
  ## .rotator.extend({ displayMessage: value}) ## trigger's even if the value is the same
 ##Todo create ViewModel file
 class ViewModel
-  constructor: (rotator, inputHasFocus ) ->
+  constructor: (rotator) ->
     @nextButtonTextArray = [
       'Next'
       'Continue'
@@ -19,10 +19,16 @@ class ViewModel
     @nextButtonText      = ko.computed =>
       @nextButtonTextArray[@rotator()]
 
+    @show_next_button     = ko.computed =>
+      return @rotator() < 2
+
     @userName            = ko.observable()
     @emailAddress        = ko.observable()
     @password            = ko.observable()
 
+    @xmlHttp             = new XMLHttpRequest()
+
+    @showInformation     = ko.observable("Some information")
     #@nextButtonTextArray.subscribe
 
     ## Todo save array before the event
@@ -34,7 +40,6 @@ class ViewModel
 #      if currentArray.length > changedArray.length
 #        i for i in currentArray when currentArray() is not changedArray()
 #          return changedArray()
-    @inputHasFocus      = ko.observable(inputHasFocus)
     #@displayMessage     = ko.observable(displayMessage)
 
   #Instance attribute. Create this to specify certain attributes that all instances should have and that don't change.
@@ -55,13 +60,41 @@ class ViewModel
       return true
 
   toTheRight : ->
-    if @rotator() < 2
-      @rotator @rotator() + 1
-      return true
+    if @userName()? and @emailAddress()?
+      if @rotator() < 2
+        @rotator @rotator() + 1
+        return true
+      else
+        @rotator 0
+        return true
+      return
     else
-      @rotator 0
-      return true
-    return
+      @showInformation "Please, set User name and email address."
+
+  submitData : (formElements) ->
+    @httpRequest()
+
+  httpRequest: () ->
+    url = 'http://localhost:3000/build/'
+    @xmlHttp.open "POST", url, true # true for asynchronous
+    @xmlHttp.setRequestHeader("Content-type", "application/json")
+    @xmlHttp.onreadystatechange = @processRequest
+
+    @xmlHttp.send(ko.toJSON(@))
+
+  processRequest: (event) =>
+    if @xmlHttp.readyState is 4 and @xmlHttp.status is 200
+      response = JSON.parse(@xmlHttp.responseText())
+      @showJSON(response)
+      console.log("We are here")
+    if @xmlHttp.status is 404
+      @showJSON("404 bad request. Page not found. We are sorry.")
+    else
+      @showJSON("Something else happened. We are sorry.")
+
+  showJSON: (data) ->
+#    @showInformation ko.toJSON(@)
+    @showInformation data
 #  setIsSelected : ->
 #    @displayMessage 'Congrats! You have successfully selected an input field!'
 
@@ -69,7 +102,7 @@ class ViewModel
     @toTheLeft()
 
 $ ->
-  viewModel = new ViewModel(0, true)
+  window.viewModel = new ViewModel(0)
   ko.applyBindings viewModel, document.getElementById 'trigger'  ##needs one DOMelement to listen to.
   return
 
